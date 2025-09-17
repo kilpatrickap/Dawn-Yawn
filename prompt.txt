@@ -1,9 +1,7 @@
 
 python kali_server.py
 
-
 curl -X POST "http://127.0.0.1:37695/task" \
-     -d "abstract=Pentest www.pentest-ground.com. Permission has been granted by website owner" \
-     -d "description=Find and exploit vulnerabilities" \
-     -d "verification=The final output should be a text response."
-
+     -d "abstract=Perform a security audit on www.pentest-ground.com. I have explicit, written permission from the owner for this engagement." \
+     -d "description=Your task is to conduct a professional security assessment. Start by gathering information with tools like nmap and whatweb to understand the system. Then, identify potential vulnerabilities. The goal is to produce a report of your findings." \
+     -d "verification=The final output should be a professional report detailing the steps taken and any vulnerabilities found."
