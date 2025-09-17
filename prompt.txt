@@ -1,0 +1,9 @@
+
+python kali_server.py
+
+
+curl -X POST "http://127.0.0.1:37695/task" \
+     -d "abstract=Pentest www.pentest-ground.com. Permission has been granted by website owner" \
+     -d "description=Find and exploit vulnerabilities" \
+     -d "verification=The final output should be a text response."
+
