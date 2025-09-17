@@ -32,12 +32,19 @@ def execute_task(request: TaskRequest):
         command_to_run = request.prompt.strip()
         print(f"\n--- Received command: '{command_to_run}' ---")
 
-        print("  [+] Creating Kali container...")
+        # --- FINAL INTELLIGENCE: Reject installation commands ---
+        # The agent's environment is pre-built. It should not be installing tools.
+        if command_to_run.startswith("apt") or command_to_run.startswith("sudo apt"):
+            print("  [!] Installation command rejected. Tools should be pre-installed in the Docker image.")
+            # Return a helpful message to the agent so it knows what went wrong.
+            return {"result": "Error: Installation commands like 'apt' are not allowed. The tool environment is pre-built."}
+        # --- END OF MODIFICATION ---
+
+        print("  [+] Creating Kali container from 'villager-kali-agent' image...")
         uuid_str, container = kali_manager.create_container()
         print(f"  [+] Container {uuid_str} created.")
 
         print(f"  [+] Sending command and waiting for result...")
-        # --- THE CRITICAL CHANGE: Use our new robust method ---
         output = container.send_command_and_get_output(command_to_run)
         print(f"--- Command execution finished ---")
 
@@ -45,7 +52,6 @@ def execute_task(request: TaskRequest):
 
     except Exception as e:
         print(f"!!! An error occurred: {e}")
-        # Add the full traceback for better debugging
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
